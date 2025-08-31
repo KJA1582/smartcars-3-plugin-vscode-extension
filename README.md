@@ -8,6 +8,10 @@ More information: [https://docs.tfdidesign.com/smartcars/plugin-creation-guide/m
 
 ## Release Notes
 
+### 1.0.1
+
+Fix availableSettings schema
+
 ### 1.0.0
 
 Initial release
