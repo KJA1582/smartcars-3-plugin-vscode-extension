@@ -3,6 +3,7 @@
   "displayName": "smartcars-3-plugin",
   "description": "",
   "author": "Kilian Kurt Hofmann",
+  "publisher": "KilianKurtHofmann",
   "license": "MIT",
   "version": "1.0.0",
   "repository": {
@@ -40,7 +41,8 @@
     "check-types": "tsc --noEmit",
     "lint": "eslint src",
     "test": "vscode-test",
-    "vsix": "npx @vscode/vsce package"
+    "vsix": "npx @vscode/vsce package",
+    "publish": "npx @vscode/vsce publish"
   },
   "devDependencies": {
     "@types/vscode": "^1.103.0",
