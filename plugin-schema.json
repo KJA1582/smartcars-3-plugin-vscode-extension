@@ -36,179 +36,228 @@
       "description": "Short description of the plugin"
     },
     "availableSettings": {
-      "type": "array",
+      "type": "object",
       "description": "List of setting the plugin has",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Setting name"
-          },
-          "description": {
-            "type": "string",
-            "description": "Setting description"
-          },
-          "type": {
-            "type": "string",
-            "description": "Type of setting",
-            "enum": [
-              "boolean",
-              "range",
-              "list",
-              "number",
-              "date",
-              "json",
-              "longtext",
-              "radio",
-              "text"
-            ]
-          },
-          "required": {
-            "type": "boolean",
-            "description": "Marks setting as required"
-          }
-        },
-        "unevaluatedProperties": false,
-        "required": ["name", "description", "type"],
-        "allOf": [
-          {
-            "if": { "properties": { "type": { "const": "boolean" } } },
-            "then": {}
-          },
-          {
-            "if": { "properties": { "type": { "const": "range" } } },
-            "then": {
-              "properties": {
-                "min": {
-                  "type": "number",
-                  "description": "Minimum value"
-                },
-                "max": {
-                  "type": "number",
-                  "description": "Maximum value"
-                },
-                "step": {
-                  "type": "number",
-                  "description": "Step size"
-                }
-              },
-              "required": ["min", "max", "step"]
+      "patternProperties": {
+        "^.*$": {
+          "type": "object",
+          "description": "Setting",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Setting name"
+            },
+            "description": {
+              "type": "string",
+              "description": "Setting description"
+            },
+            "type": {
+              "type": "string",
+              "description": "Type of setting",
+              "enum": [
+                "boolean",
+                "range",
+                "list",
+                "number",
+                "date",
+                "json",
+                "longtext",
+                "radio",
+                "text"
+              ]
+            },
+            "required": {
+              "type": "boolean",
+              "description": "Marks setting as required"
+            },
+            "settingType": {
+              "type": "string",
+              "description": "Where this setting is set",
+              "enum": ["user", "airline"]
             }
           },
-          {
-            "if": { "properties": { "type": { "const": "list" } } },
-            "then": {
-              "properties": {
-                "options": {
-                  "type": "object",
-                  "patternProperties": {
-                    "^option_[1-9]+[0-9]*$": {
-                      "type": "string",
-                      "description": "Option"
-                    }
+          "unevaluatedProperties": false,
+          "required": ["name", "type", "settingType"],
+          "allOf": [
+            {
+              "if": { "properties": { "type": { "const": "boolean" } } },
+              "then": {
+                "properties": {
+                  "default": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            },
+            {
+              "if": { "properties": { "type": { "const": "range" } } },
+              "then": {
+                "properties": {
+                  "min": {
+                    "type": "number",
+                    "description": "Minimum value"
                   },
-                  "additionalProperties": false
-                }
-              },
-              "required": ["options"]
-            }
-          },
-          {
-            "if": { "properties": { "type": { "const": "number" } } },
-            "then": {
-              "properties": {
-                "min": {
-                  "type": "number",
-                  "description": "Minimum value"
-                },
-                "max": {
-                  "type": "number",
-                  "description": "Maximum value"
-                },
-                "step": {
-                  "type": "number",
-                  "description": "Step size"
-                }
-              },
-              "required": ["min", "max", "step"]
-            }
-          },
-          {
-            "if": { "properties": { "type": { "const": "date" } } },
-            "then": {}
-          },
-          {
-            "if": { "properties": { "type": { "const": "json" } } },
-            "then": {
-              "properties": {
-                "minLength": {
-                  "type": "number",
-                  "description": "Minimum length in chars"
-                },
-                "maxLength": {
-                  "type": "number",
-                  "description": "Maximum length in chars"
-                }
-              },
-              "required": ["minLength", "maxLength"]
-            }
-          },
-          {
-            "if": { "properties": { "type": { "const": "longtext" } } },
-            "then": {
-              "properties": {
-                "minLength": {
-                  "type": "number",
-                  "description": "Minimum length in chars"
-                },
-                "maxLength": {
-                  "type": "number",
-                  "description": "Maximum length in chars"
-                }
-              },
-              "required": ["minLength", "maxLength"]
-            }
-          },
-          {
-            "if": { "properties": { "type": { "const": "radio" } } },
-            "then": {
-              "properties": {
-                "options": {
-                  "type": "object",
-                  "patternProperties": {
-                    "^option_[1-9]+[0-9]*$": {
-                      "type": "string",
-                      "description": "Option"
-                    }
+                  "max": {
+                    "type": "number",
+                    "description": "Maximum value"
                   },
-                  "additionalProperties": false
-                }
-              },
-              "required": ["options"]
-            }
-          },
-          {
-            "if": { "properties": { "type": { "const": "text" } } },
-            "then": {
-              "properties": {
-                "minLength": {
-                  "type": "number",
-                  "description": "Minimum length in chars"
+                  "step": {
+                    "type": "number",
+                    "description": "Step size"
+                  },
+                  "default": {
+                    "type": "number"
+                  }
                 },
-                "maxLength": {
-                  "type": "number",
-                  "description": "Maximum length in chars"
+                "required": ["min", "max", "step"]
+              }
+            },
+            {
+              "if": { "properties": { "type": { "const": "list" } } },
+              "then": {
+                "properties": {
+                  "options": {
+                    "type": "object",
+                    "patternProperties": {
+                      "^option_[1-9]+[0-9]*$": {
+                        "type": "string",
+                        "description": "Option"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "default": {
+                    "type": "object",
+                    "patternProperties": {
+                      "^option_[1-9]+[0-9]*$": {
+                        "type": "string",
+                        "description": "Option"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
                 },
-                "pattern": {
-                  "type": "string",
-                  "description": "Regex pattern"
-                }
-              },
-              "required": ["minLength", "maxLength", "pattern"]
+                "required": ["options"]
+              }
+            },
+            {
+              "if": { "properties": { "type": { "const": "number" } } },
+              "then": {
+                "properties": {
+                  "min": {
+                    "type": "number",
+                    "description": "Minimum value"
+                  },
+                  "max": {
+                    "type": "number",
+                    "description": "Maximum value"
+                  },
+                  "step": {
+                    "type": "number",
+                    "description": "Step size"
+                  },
+                  "default": {
+                    "type": "number"
+                  }
+                },
+                "required": ["min", "max", "step"]
+              }
+            },
+            {
+              "if": { "properties": { "type": { "const": "date" } } },
+              "then": {}
+            },
+            {
+              "if": { "properties": { "type": { "const": "json" } } },
+              "then": {
+                "properties": {
+                  "minLength": {
+                    "type": "number",
+                    "description": "Minimum length in chars"
+                  },
+                  "maxLength": {
+                    "type": "number",
+                    "description": "Maximum length in chars"
+                  },
+                  "default": {
+                    "type": "string"
+                  }
+                },
+                "required": ["minLength", "maxLength"]
+              }
+            },
+            {
+              "if": { "properties": { "type": { "const": "longtext" } } },
+              "then": {
+                "properties": {
+                  "minLength": {
+                    "type": "number",
+                    "description": "Minimum length in chars"
+                  },
+                  "maxLength": {
+                    "type": "number",
+                    "description": "Maximum length in chars"
+                  },
+                  "default": {
+                    "type": "string"
+                  }
+                },
+                "required": ["minLength", "maxLength"]
+              }
+            },
+            {
+              "if": { "properties": { "type": { "const": "radio" } } },
+              "then": {
+                "properties": {
+                  "options": {
+                    "type": "object",
+                    "patternProperties": {
+                      "^option_[1-9]+[0-9]*$": {
+                        "type": "string",
+                        "description": "Option"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "default": {
+                    "type": "object",
+                    "patternProperties": {
+                      "^option_[1-9]+[0-9]*$": {
+                        "type": "string",
+                        "description": "Option"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "required": ["options"]
+              }
+            },
+            {
+              "if": { "properties": { "type": { "const": "text" } } },
+              "then": {
+                "properties": {
+                  "minLength": {
+                    "type": "number",
+                    "description": "Minimum length in chars"
+                  },
+                  "maxLength": {
+                    "type": "number",
+                    "description": "Maximum length in chars"
+                  },
+                  "pattern": {
+                    "type": "string",
+                    "description": "Regex pattern"
+                  },
+                  "default": {
+                    "type": "string"
+                  }
+                },
+                "required": ["minLength", "maxLength", "pattern"]
+              }
             }
-          }
-        ]
+          ]
+        }
       }
     }
   },
