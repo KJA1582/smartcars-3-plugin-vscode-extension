@@ -5,6 +5,10 @@
   "author": "Kilian Kurt Hofmann",
   "license": "MIT",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KJA1582/smartcars-3-plugin-vscode-extension"
+  },
   "engines": {
     "vscode": "^1.103.0"
   },
@@ -35,7 +39,8 @@
     "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
     "check-types": "tsc --noEmit",
     "lint": "eslint src",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "vsix": "npx @vscode/vsce package"
   },
   "devDependencies": {
     "@types/vscode": "^1.103.0",
